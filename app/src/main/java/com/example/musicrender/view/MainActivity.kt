@@ -1,6 +1,7 @@
 package com.example.musicrender.view
 
 import android.os.Bundle
+import android.util.Log
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
@@ -88,8 +89,10 @@ fun Search(viewModel: SearchViewModel, modifier: Modifier = Modifier) {
                     },
                 )
                 Button(
+                    modifier = Modifier.background(Color.Gray),
                     onClick = {
-                        viewModel.searchQuery()
+//                        viewModel.searchQuery()
+                        viewModel.animateCanvas()
                     }
                 ) {
                     Text(
@@ -99,18 +102,9 @@ fun Search(viewModel: SearchViewModel, modifier: Modifier = Modifier) {
             }
         }
         item {
-            Canvas(
-                modifier = Modifier.fillMaxWidth()
-                    .height(200.dp)
-                    .background(color = Color.DarkGray)
-            ) {
-                val rectSize = 20.dp.toPx()
-                drawRect(
-                    color = Color.Cyan,
-                    topLeft = Offset(10f, 10f),
-                    size = Size(rectSize, rectSize)
-                )
-            }
+            ChordRender(
+                viewModel
+            )
         }
         items(5, key = { it + 1 }) {
             HorizontalDivider(
@@ -130,6 +124,85 @@ fun Search(viewModel: SearchViewModel, modifier: Modifier = Modifier) {
                 colorFilter = ColorFilter.colorMatrix(ColorMatrix(colorMatrix))
             )
         }
+    }
+}
+
+@Composable
+fun ChordRender(viewModel: SearchViewModel) {
+    Canvas(
+        modifier = Modifier
+            .fillMaxWidth()
+            .height(200.dp)
+            .background(color = Color.DarkGray)
+    ) {
+//        val rectSize = 20.dp.toPx()
+//        drawRect(
+//            color = Color.Cyan,
+//            topLeft = Offset(
+//                viewModel.rectX.value.toFloat() * 50,
+//                10f
+//            ),
+//            size = Size(rectSize, rectSize)
+//        )
+
+        val distanceBetweenStr = (size.height - 50) / 6
+        val renderLength = size.width*2/3
+        var fretSize  = renderLength / 4
+        Log.d("TEST", listOf(
+            "fretsize",
+            fretSize
+        ).toString())
+        for (i in 0..5) {
+            drawLine(
+                color = Color.Cyan,
+                start = Offset(
+                    viewModel.chordRenderStartX.value.toFloat(),
+                    (viewModel.chordRenderStartY.value  + i*distanceBetweenStr).toFloat(),
+                ),
+                end = Offset(
+                    (viewModel.chordRenderStartX.value + renderLength).toFloat(),
+                    (viewModel.chordRenderStartY.value + i*distanceBetweenStr).toFloat(),
+                ),
+                strokeWidth = 10f
+            )
+        }
+        for (i in 0..4) {
+            Log.d("TEST", "insideLoop")
+            drawLine(
+                color = Color.Cyan,
+                start = Offset(
+                    (viewModel.chordRenderStartX.value + fretSize*i).toFloat(),
+                    (viewModel.chordRenderStartY.value).toFloat(),
+                ),
+                end = Offset(
+                    (viewModel.chordRenderStartX.value + fretSize*i).toFloat(),
+                    (viewModel.chordRenderStartY.value .toFloat() + distanceBetweenStr*5),
+                ),
+                strokeWidth = 10f
+            )
+        }
+        drawLine(
+            color = Color.Cyan,
+            start = Offset(
+                (viewModel.chordRenderStartX.value + fretSize*4 + 20).toFloat(),
+                (viewModel.chordRenderStartY.value).toFloat(),
+            ),
+            end = Offset(
+                (viewModel.chordRenderStartX.value + fretSize*4 + 20).toFloat(),
+                (viewModel.chordRenderStartY.value.toFloat() + distanceBetweenStr*5),
+            ),
+            strokeWidth = 10f
+        )
+
+        drawCircle(
+            color = Color.Blue ,
+            center = Offset(
+                (viewModel.chordRenderStartX.value + fretSize*2 + fretSize/2).toFloat(),
+                (viewModel.chordRenderStartY.value).toFloat() + distanceBetweenStr*3,
+            ),
+            radius = distanceBetweenStr/2,
+        )
+
     }
 }
 
