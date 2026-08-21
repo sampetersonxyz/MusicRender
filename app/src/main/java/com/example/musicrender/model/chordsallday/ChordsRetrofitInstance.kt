@@ -1,4 +1,4 @@
-package com.example.musicrender.model
+package com.example.musicrender.model.chordsallday
 
 import okhttp3.OkHttpClient
 import retrofit2.Retrofit

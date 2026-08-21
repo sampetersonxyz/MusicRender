@@ -12,7 +12,9 @@ pluginManagement {
     }
 }
 dependencyResolutionManagement {
-    repositoriesMode.set(RepositoriesMode.FAIL_ON_PROJECT_REPOS)
+    // Changed to PREFER_PROJECT to allow the Kotlin Multiplatform plugin 
+    // to automatically add the Node.js distribution repositories it requires.
+    repositoriesMode.set(RepositoriesMode.PREFER_PROJECT)
     repositories {
         google()
         mavenCentral()
@@ -21,4 +23,3 @@ dependencyResolutionManagement {
 
 rootProject.name = "MusicRender"
 include(":app")
- 

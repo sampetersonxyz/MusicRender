@@ -1,5 +1,6 @@
-package com.example.musicrender.model
+package com.example.musicrender.model.chordsallday
 
+import com.example.musicrender.model.chordsallday.ChordsListResponse
 import retrofit2.Call
 import retrofit2.http.GET
 import retrofit2.http.Query
@@ -9,9 +10,9 @@ interface ChordsApiService {
 
     @GET("v1/chords")
     fun getChords(
-        @Query ("limit") limit: String,
-        @Query ("page") page: String,
+        @Query("limit") limit: String,
+        @Query("page") page: String,
         @Query("note") note: String,
-        @Query ("type") type: String
+        @Query("type") type: String
     ): Call<ChordsListResponse>
 }
