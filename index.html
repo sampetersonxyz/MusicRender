@@ -14,26 +14,26 @@
             margin: 0 auto;
             background: white;
             padding: 20px;
-            border-radius: 8px;
+            border-radius: 12px;
             box-shadow: 0 2px 10px rgba(0,0,0,0.1);
         }
         iframe {
             width: 100%;
             height: 500px;
             border: 2px solid #333;
-            border-radius: 4px;
+            border-radius: 8px;
         }
     </style>
 </head>
 <body>
     <div class="container">
         <h1>Website Embed Test</h1>
-        <p>Below is your MusicRender Wasm app running inside an iframe:</p>
+        <p>Below is your MusicRender app running live from GitHub Pages:</p>
 
-        <!-- Points to the default port used by wasmJsBrowserDevelopmentRun -->
-        <iframe src="http://localhost:8080"></iframe>
+        <!-- Points to your live GitHub Pages site -->
+        <iframe src="https://sampetersonxyz.github.io/MusicRender/"></iframe>
 
-        <p>Make sure you have started the dev server using <code>./gradlew :app:wasmJsBrowserDevelopmentRun</code></p>
+        <p>If you see a 404, make sure you have pushed the <code>docs</code> folder and set GitHub Pages to serve from <code>/docs</code> in your repository settings.</p>
     </div>
 </body>
 </html>

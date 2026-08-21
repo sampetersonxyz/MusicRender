@@ -36,10 +36,8 @@ kotlin {
         }
 
         val androidMain by getting {
-            // Tell KMP where your existing Android code is
             kotlin.srcDirs("src/main/java")
             
-            // Exclude files that have been moved to commonMain to avoid redeclaration errors
             kotlin.exclude("com/example/musicrender/model/Chord.kt")
             kotlin.exclude("com/example/musicrender/model/Note.kt")
             kotlin.exclude("com/example/musicrender/model/ChordType.kt")
@@ -60,7 +58,6 @@ kotlin {
 
         val wasmJsMain by getting {
             dependencies {
-                // Web specific dependencies
             }
         }
     }
@@ -78,8 +75,6 @@ android {
         versionName = "1.0"
     }
 
-    // This block fixes the Manifest error by explicitly pointing Android
-    // to your existing files in src/main
     sourceSets["main"].apply {
         manifest.srcFile("src/main/AndroidManifest.xml")
         res.srcDirs("src/main/res")
@@ -88,5 +83,24 @@ android {
     compileOptions {
         sourceCompatibility = JavaVersion.VERSION_11
         targetCompatibility = JavaVersion.VERSION_11
+    }
+}
+
+// Task to prepare the docs/ folder for GitHub Pages
+tasks.register("deployToDocs") {
+    group = "deployment"
+    dependsOn("wasmJsBrowserDistribution")
+    doLast {
+        val buildDir = layout.buildDirectory.dir("dist/wasmJs/productionExecutable").get().asFile
+        val docsDir = rootProject.layout.projectDirectory.dir("docs").asFile
+        
+        delete(docsDir)
+        copy {
+            from(buildDir)
+            into(docsDir)
+        }
+        // Add .nojekyll to prevent GitHub Jekyll from ignoring Wasm files
+        File(docsDir, ".nojekyll").writeText("")
+        println("Production files copied to ${docsDir.absolutePath}")
     }
 }
