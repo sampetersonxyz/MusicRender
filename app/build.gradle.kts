@@ -86,21 +86,20 @@ android {
     }
 }
 
-// Task to prepare the docs/ folder for GitHub Pages
-tasks.register("deployToDocs") {
+// Task to deploy production files directly to the project root for GitHub Pages
+tasks.register("deploy") {
     group = "deployment"
     dependsOn("wasmJsBrowserDistribution")
     doLast {
         val buildDir = layout.buildDirectory.dir("dist/wasmJs/productionExecutable").get().asFile
-        val docsDir = rootProject.layout.projectDirectory.dir("docs").asFile
+        val rootDir = rootProject.layout.projectDirectory.asFile
         
-        delete(docsDir)
         copy {
             from(buildDir)
-            into(docsDir)
+            into(rootDir)
         }
-        // Add .nojekyll to prevent GitHub Jekyll from ignoring Wasm files
-        File(docsDir, ".nojekyll").writeText("")
-        println("Production files copied to ${docsDir.absolutePath}")
+        // Create .nojekyll so GitHub doesn't ignore the Wasm files
+        File(rootDir, ".nojekyll").writeText("")
+        println("Production files deployed to root: ${rootDir.absolutePath}")
     }
 }
