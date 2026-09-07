@@ -35,7 +35,7 @@ fun ChordRender(chordName: String, fingering: GuitarFingering) {
         fontWeight = FontWeight.Bold
     )
 
-    Column(modifier = Modifier.fillMaxWidth()) {
+    Column(modifier = Modifier.fillMaxWidth().background(Color.Black)) {
         Row(
             modifier = Modifier
                 .fillMaxWidth()
