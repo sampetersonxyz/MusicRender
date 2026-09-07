@@ -26,7 +26,9 @@ jobs:
           java-version: '21'
 
       - name: Build Wasm
-        run: ./gradlew wasmJsBrowserDistribution
+        run:
+          chmod +x gradlew
+          ./gradlew wasmJsBrowserDistribution
 
       - name: Upload Pages artifact
         uses: actions/upload-pages-artifact@v3
