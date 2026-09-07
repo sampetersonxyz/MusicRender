@@ -36,14 +36,24 @@ kotlin {
         }
 
         val androidMain by getting {
+            // Tell KMP where your existing Android code is
             kotlin.srcDirs("src/main/java")
             
-            kotlin.exclude("com/example/musicrender/model/Chord.kt")
-            kotlin.exclude("com/example/musicrender/model/Note.kt")
-            kotlin.exclude("com/example/musicrender/model/ChordType.kt")
-            kotlin.exclude("com/example/musicrender/model/Interval.kt")
-            kotlin.exclude("com/example/musicrender/model/GuitarChordGenerator.kt")
-            kotlin.exclude("com/example/musicrender/model/GuitarFingering.kt")
+            // Exclude files that have been moved to commonMain to avoid redeclaration errors
+            kotlin.exclude("**/model/Chord.kt")
+            kotlin.exclude("**/model/Note.kt")
+            kotlin.exclude("**/model/ChordType.kt")
+            kotlin.exclude("**/model/Interval.kt")
+            kotlin.exclude("**/model/GuitarChordGenerator.kt")
+            kotlin.exclude("**/model/GuitarFingering.kt")
+            
+            // Exclude chordsallday models moved to commonMain
+            kotlin.exclude("**/model/chordsallday/NoteAD.kt")
+            kotlin.exclude("**/model/chordsallday/LangString.kt")
+            kotlin.exclude("**/model/chordsallday/ChordADType.kt")
+            kotlin.exclude("**/model/chordsallday/ChordADEntry.kt")
+            kotlin.exclude("**/model/chordsallday/ChordADImage.kt")
+            kotlin.exclude("**/model/chordsallday/ChordsListResponse.kt")
 
             dependencies {
                 implementation(libs.androidx.activity.compose)
@@ -53,6 +63,7 @@ kotlin {
                 implementation("androidx.lifecycle:lifecycle-viewmodel-compose:2.8.0")
                 implementation("com.squareup.retrofit2:retrofit:2.9.0")
                 implementation("com.squareup.retrofit2:converter-gson:2.9.0")
+                implementation("com.squareup.okhttp3:okhttp:4.12.0")
             }
         }
 
@@ -86,6 +97,24 @@ android {
     }
 }
 
+// Task to prepare the docs/ folder for GitHub Pages
+tasks.register("deployToDocs") {
+    group = "deployment"
+    dependsOn("wasmJsBrowserDistribution")
+    doLast {
+        val buildDir = layout.buildDirectory.dir("dist/wasmJs/productionExecutable").get().asFile
+        val docsDir = rootProject.layout.projectDirectory.dir("docs").asFile
+        
+        delete(docsDir)
+        copy {
+            from(buildDir)
+            into(docsDir)
+        }
+        File(docsDir, ".nojekyll").writeText("")
+        println("Production files copied to ${docsDir.absolutePath}")
+    }
+}
+
 // Task to deploy production files directly to the project root for GitHub Pages
 tasks.register("deploy") {
     group = "deployment"
@@ -98,7 +127,6 @@ tasks.register("deploy") {
             from(buildDir)
             into(rootDir)
         }
-        // Create .nojekyll so GitHub doesn't ignore the Wasm files
         File(rootDir, ".nojekyll").writeText("")
         println("Production files deployed to root: ${rootDir.absolutePath}")
     }
