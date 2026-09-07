@@ -60,6 +60,7 @@ kotlin {
                 implementation(libs.androidx.core.ktx)
                 implementation(libs.androidx.lifecycle.runtime.ktx)
                 implementation(libs.androidx.compose.ui.tooling.preview)
+                implementation(libs.androidx.compose.ui.tooling) // Added to fix ClassNotFoundException for ComposeViewAdapter
                 implementation("androidx.lifecycle:lifecycle-viewmodel-compose:2.8.0")
                 implementation("com.squareup.retrofit2:retrofit:2.9.0")
                 implementation("com.squareup.retrofit2:converter-gson:2.9.0")

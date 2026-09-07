@@ -7,7 +7,6 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import com.example.musicrender.model.GuitarFingering
-import org.jetbrains.compose.ui.tooling.preview.Preview
 
 @Composable
 fun MusicRender() {
@@ -18,10 +17,4 @@ fun MusicRender() {
             fingering = GuitarFingering(listOf(null, 3, 2, 0, 1, 0))
         )
     }
-}
-
-@Preview
-@Composable
-fun MusicRenderPreview() {
-    MusicRender()
 }
