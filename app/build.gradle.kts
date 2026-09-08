@@ -68,6 +68,21 @@ kotlin {
             }
         }
 
+        val androidUnitTest by getting {
+            kotlin.srcDirs("src/test/java")
+            dependencies {
+                implementation(libs.junit)
+            }
+        }
+
+        val androidInstrumentedTest by getting {
+            kotlin.srcDirs("src/androidTest/java")
+            dependencies {
+                implementation(libs.androidx.junit)
+                implementation(libs.androidx.espresso.core)
+            }
+        }
+
         val wasmJsMain by getting {
             dependencies {
             }
@@ -85,6 +100,8 @@ android {
         targetSdk = 35
         versionCode = 1
         versionName = "1.0"
+        
+        testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
     }
 
     sourceSets["main"].apply {

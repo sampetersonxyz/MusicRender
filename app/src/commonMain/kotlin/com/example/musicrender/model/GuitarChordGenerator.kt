@@ -65,7 +65,76 @@ class GuitarChordGenerator {
                 currentFingering.removeAt(currentFingering.lastIndex)
             }
         }
-        return fingerings
+
+        //Filter Fingerings
+        val threeOrMore = mutableListOf<GuitarFingering>()
+        for (f in fingerings) {
+            var playedStringCount = 0
+            var playedNoteCount = 0
+            var containsNull = false
+            for (fret in f.frets) {
+                if(fret != null) {
+                    playedStringCount ++
+                    if(fret != 0) {
+                        playedNoteCount ++
+                    }
+                } else {
+                    containsNull = true
+                }
+            }
+            var isMutedEdge = true
+            var isMiddleMute = false
+            for (i in 0..2) {
+                if(f.frets[i] != null)  {
+                    isMutedEdge = false
+                }
+                if (!isMutedEdge && f.frets[i] == null) {
+                    isMiddleMute = true
+                }
+            }
+            isMutedEdge = true
+            if(!isMiddleMute) {
+                for (i in listOf(5,4,3)) {
+                    if(f.frets[i] != null)  {
+                        isMutedEdge = false
+//                        Log.d("TEST", "i "  + i + " mutededge " + isMutedEdge)
+                    }
+                    if (!isMutedEdge && f.frets[i] == null) {
+                        isMiddleMute = true
+//                        Log.d("TEST", "i "  + i + " middle " + isMiddleMute)
+                    }
+                }
+            }
+
+            if(playedStringCount > 3 && playedNoteCount < 5 && !isMiddleMute) {
+                threeOrMore.add(f)
+            }
+        }
+
+        var maxStrings = 0
+        for (chord in threeOrMore) {
+            if(chord.playedStrings() > maxStrings) {
+                maxStrings = chord.playedStrings()
+            }
+        }
+        val maxList = mutableListOf<GuitarFingering>()
+        for(chord in threeOrMore) {
+            if(chord.playedStrings() == maxStrings) {
+                maxList.add(chord)
+            }
+        }
+
+
+//        Log.d("TEST", listOf(
+//            "SHOW ME CHORD",
+//            CChord,
+//            CChord.notes,
+//            maxList,
+//        ).toString())
+
+//        chordList.value = maxList
+
+        return maxList
 
     }
 }

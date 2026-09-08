@@ -22,6 +22,7 @@ import androidx.compose.ui.text.AnnotatedString
 import androidx.compose.ui.text.drawText
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.rememberTextMeasurer
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.musicrender.model.GuitarFingering
@@ -34,7 +35,13 @@ fun ChordRender(chordName: String, fingering: GuitarFingering) {
     val style = MaterialTheme.typography.headlineSmall.copy(
         fontWeight = FontWeight.Bold
     )
-
+    Text(
+        text = chordName,
+        color = Color.White,
+        fontSize = 32.sp,
+        textAlign = TextAlign.Center,
+        modifier = Modifier.fillMaxWidth()
+    )
     Column(modifier = Modifier.fillMaxWidth().background(Color.Black)) {
         Row(
             modifier = Modifier
@@ -42,12 +49,6 @@ fun ChordRender(chordName: String, fingering: GuitarFingering) {
                 .padding(16.dp),
             verticalAlignment = Alignment.CenterVertically
         ) {
-            Text(
-                text = chordName,
-                color = Color.White,
-                fontSize = 32.sp,
-                modifier = Modifier.weight(0.3f)
-            )
 
             Canvas(
                 modifier = Modifier
@@ -92,14 +93,14 @@ fun ChordRender(chordName: String, fingering: GuitarFingering) {
                 for (i in 0..5) {
                     val f = fingering.frets[i]
                     val yPos = startY + i * distanceBetweenStr
-                    val centerX_open = startX + 4 * fretSize + 35f
+                    val centerX_open = startX + 4 * fretSize + 50f
                     
                     when (f) {
                         0 -> drawCircle(
                             color = Color.Cyan,
                             center = Offset(centerX_open, yPos),
                             radius = distanceBetweenStr / 6,
-                            style = Stroke(width = 4f)
+                            style = Stroke(width = 6f)
                         )
                         null -> drawXShape(
                             color = Color.Red,

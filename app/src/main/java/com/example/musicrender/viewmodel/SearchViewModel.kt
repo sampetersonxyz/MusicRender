@@ -47,7 +47,7 @@ class SearchViewModel: ViewModel() {
     }
 
     fun animateCanvas() {
-        val root = Note.G
+        val root = Note.C
         val type = ChordType.MAJOR
 
         val CChord = Chord(root, type)
@@ -57,6 +57,7 @@ class SearchViewModel: ViewModel() {
 
 
 
+        /*
         val threeOrMore = mutableListOf<GuitarFingering>()
         for (f in fingerings) {
             var playedStringCount = 0
@@ -113,6 +114,10 @@ class SearchViewModel: ViewModel() {
                maxList.add(chord)
             }
         }
+        */
+        val maxList = mutableListOf<GuitarFingering>()
+        maxList.addAll(fingerings)
+
 
 
         Log.d("TEST", listOf(
