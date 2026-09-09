@@ -41,7 +41,7 @@ enum class ChordType (
 
     override fun toString(): String {
         return when (this) {
-            ChordType.MAJOR -> ""
+            ChordType.MAJOR -> "Major"
             ChordType.MINOR -> "Minor"
             ChordType.DOMINANT_7 -> "7"
             ChordType.MAJOR_7 -> "Maj7"
